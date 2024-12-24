@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Genres{% endblock %}
+
+{% block content %}
+<h1>Genres</h1>
+
+<!-- Button to Add a New Genre -->
+<div class="mb-3">
+    <a href="{% url 'bookapp:create_genre' %}" class="btn btn-primary">Add Genre</a>
+</div>
+
+<!-- Table Displaying Genres -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for genre in genres %}
+        <tr>
+            <td>{{ genre.name }}</td>
+            <td>{{ genre.description }}</td>
+            <td>
+                <!-- Edit Button -->
+                <a href="{% url 'bookapp:edit_genre' genre.id %}" class="btn btn-sm btn-warning">Edit</a>
+
+                <!-- Delete Button -->
+                <form action="{% url 'bookapp:delete_genre' genre.id %}" method="post" style="display:inline-block;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this genre?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
